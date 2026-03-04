@@ -13,7 +13,7 @@ export class CartPage {
         this.removeFirstItemBtn = page.locator('[id="cart-item-decrease-6"]');
     }
     
-    async checkTotalPrice() {
+    async goToCheckoutPage() {
         await this.checkoutBtn.click();
         await this.page.waitForURL('/checkout');
     }
