@@ -46,10 +46,17 @@ export default defineConfig({
        },
     },
     {
+      name: 'e2e-tests',
+      testMatch: 'e2e.spec.js',
+      use: {
+        baseURL: process.env.UI_BASE_URL,
+      },
+    },
+    {
       name: 'api-tests',
       testMatch: 'api.spec.js',
       use: {
-        baseURL: process.env.API_URL,
+        baseURL: process.env.API_BASE_URL,
       },
     }
 

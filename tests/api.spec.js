@@ -3,7 +3,7 @@ import{ apiDataPost, apiDataPatch } from '../data/testData';
 
 test.describe('API project', () => {
     test('GET placeholder', async ({request}) => {
-        const response = await request.get(process.env.API_URL + '/1');
+        const response = await request.get('/posts/1');
         expect(response.status()).toBe(200);
         const body = await response.json();
         console.log(body);
@@ -17,14 +17,14 @@ test.describe('API project', () => {
 
 
     test('POST posts', async ({request}) => {
-        const response = await request.post(process.env.API_URL, {data: apiDataPost, headers: {'Content-Type': 'application/json; charset=UTF-8'}});
+        const response = await request.post('/posts', {data: apiDataPost, headers: {'Content-Type': 'application/json; charset=UTF-8'}});
         expect(response.status()).toBe(201);
         const body = await response.json();
         console.log(body);
     });
 
     test('PATCH posts', async ({request}) => {
-        const response = await request.patch(process.env.API_URL +'/1', {data: apiDataPatch, headers: {'Content-Type': 'application/json; charset=UTF-8'}});
+        const response = await request.patch('/posts/1', {data: apiDataPatch, headers: {'Content-Type': 'application/json; charset=UTF-8'}});
         expect(response.status()).toBe(200);
         const body = await response.json();
         expect(body.title).toBe(apiDataPatch.title);
