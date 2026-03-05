@@ -13,7 +13,11 @@ import { MyAccountPage } from '../ui/MyAccount.page';
 
 test.setTimeout(50 * 1000);
 test.describe('E2E: order flow', () => {
-    test.beforeEach(async ({ page }, testInfo) => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/');
+    });
+
+    test.afterEach(async ({ page }, testInfo) => {
         if (testInfo.status !== testInfo.expectedStatus) {
             console.log(`Test failed: ${testInfo.title}`);
             await page.screenshot({ 
@@ -24,8 +28,6 @@ test.describe('E2E: order flow', () => {
     });
 
     test('Create user, login, order 2 items, payments', async ({ page }) => {
-        const registerPage = new RegisterPage(page);
-        const loginPage = new LoginPage(page);
         const catalogPage = new CatalogPage(page);
         const checkoutPage = new CheckoutPage(page);
         const myAccountPage = new MyAccountPage(page);
@@ -33,15 +35,7 @@ test.describe('E2E: order flow', () => {
 
         let items;
 
-        await test.step('Open Login page', async () => {
-            await registerPage.openLoginPage();
-        });
-        await test.step('Register new user', async () => {
-            await registerPage.fillRegistrationForm(newUser1);
-        });
-        await test.step('Login with created user', async () => {
-            await loginPage.login(newUser1.email, newUser1.password);
-        });
+
         await test.step('Select 2 products', async () => {
             items = await catalogPage.getProductDetails();
             await catalogPage.selectProduct();
