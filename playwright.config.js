@@ -30,6 +30,9 @@ export default defineConfig({
   reporter: [['html', { open: 'never' }], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
+    timeout: 60 * 1000,
+    actionTimeout: 10 * 1000,
+    navigationTimeout: 10 * 1000,
     headless: false,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
