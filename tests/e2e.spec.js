@@ -11,7 +11,6 @@ import { CheckoutPage } from '../ui/Checkout.page';
 import { MyAccountPage } from '../ui/MyAccount.page';
 
 
-test.setTimeout(50 * 1000);
 test.describe('E2E: order flow', () => {
     test.beforeEach(async ({ page }) => {
         await page.goto('/');
