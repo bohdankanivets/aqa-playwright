@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'node:path';
 
-dotenv.config({path: '.env'});
+dotenv.config({ path: '.env' });
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -33,7 +33,7 @@ export default defineConfig({
     timeout: 60 * 1000,
     actionTimeout: 10 * 1000,
     navigationTimeout: 10 * 1000,
-    headless: false,
+    headless: true,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
@@ -62,7 +62,7 @@ export default defineConfig({
       dependencies: ['setup-ui'],
       use: {
         baseURL: process.env.UI_BASE_URL,
-        storageState: 'data/storageState.json',
+        storageState: 'data/storageState.json'
       }
     },
     {
