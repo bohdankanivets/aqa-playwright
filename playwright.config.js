@@ -3,7 +3,7 @@ import { defineConfig, devices } from '@playwright/test';
 import dotenv from 'dotenv';
 import path from 'node:path';
 
-dotenv.config({path: '.env'});
+dotenv.config({ path: '.env' });
 /**
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
@@ -17,19 +17,23 @@ dotenv.config({path: '.env'});
  */
 export default defineConfig({
   testDir: './tests',
+  globalTeardown: "./global-teardown.js",
   /* Run tests in files in parallel */
   fullyParallel: false,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
-  retries: process.env.CI ? 2 : 0,
+  retries: process.env.CI ? 1 : 0,
   /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: process.env.CI ? 1 : 2,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: 'html',
+  reporter: [['html', { open: 'never' }], ['list']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    headless: false,
+    timeout: 60 * 1000,
+    actionTimeout: 10 * 1000,
+    navigationTimeout: 10 * 1000,
+    headless: true,
     /* Base URL to use in actions like `await page.goto('')`. */
     // baseURL: 'http://localhost:3000',
 
@@ -41,15 +45,31 @@ export default defineConfig({
   /* Configure projects for major browsers */
   projects: [
     {
+      name: 'setup-ui',
+      testMatch: 'auth.setup.js',
+      use: {
+        baseURL: process.env.UI_BASE_URL
+      }
+    },
+    {
       name: 'chromium',
       use: { ...devices['Desktop Chrome']
        },
     },
     {
+      name: 'e2e-tests',
+      testMatch: 'e2e.spec.js',
+      dependencies: ['setup-ui'],
+      use: {
+        baseURL: process.env.UI_BASE_URL,
+        storageState: 'data/storageState.json'
+      }
+    },
+    {
       name: 'api-tests',
       testMatch: 'api.spec.js',
       use: {
-        baseURL: process.env.API_URL,
+        baseURL: process.env.API_BASE_URL,
       },
     }
 

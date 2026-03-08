@@ -1,7 +1,5 @@
-import { expect } from '@playwright/test';
-
 export class CartPage {
-    constructor(page, tabletNameValue, coffeeMachineNameValue, tabletPriceValue, coffeeMachinePriceValue) {
+    constructor(page) {
         this.page = page;
         this.firstItemName = page.locator('[id="cart-item-name-6"]');
         this.firstItemPrice = page.locator('[id="cart-item-price-6"]');
@@ -13,27 +11,11 @@ export class CartPage {
 
         this.addFirstItemBtn = page.locator('[id="cart-item-increase-6"]');
         this.removeFirstItemBtn = page.locator('[id="cart-item-decrease-6"]');
-
-        this.tabletNameValue = tabletNameValue;
-        this.coffeeMachineNameValue = coffeeMachineNameValue;
-        this.tabletPriceValue = tabletPriceValue;
-        this.coffeeMachinePriceValue = coffeeMachinePriceValue;
-    }
-
-    async compareProductDetails() {
-        await expect(this.firstItemName).toHaveText(this.coffeeMachineNameValue);
-        await expect(this.firstItemPrice).toHaveText(this.coffeeMachinePriceValue);
-        await expect(this.secondItemName).toHaveText(this.tabletNameValue);
-        await expect(this.secondItemPrice).toHaveText(this.tabletPriceValue);
     }
     
-    async checkTotalPrice() {
-        const firstProductPriceNumber = Number((await this.firstItemPrice.innerText()).replace(/\D/g, ''));
-        const secondProductPriceNumber = Number((await this.secondItemPrice.innerText()).replace(/\D/g, ''));
-        const totalNumber = parseInt((await this.totalValue.innerText()).replace(/[^\d.]/g, ''), 10);
-        expect(totalNumber).toBe(firstProductPriceNumber + secondProductPriceNumber);
+    async goToCheckoutPage() {
         await this.checkoutBtn.click();
-        await this.page.waitForURL('https://aqa-app.vercel.app/checkout');
+        await this.page.waitForURL('/checkout');
     }
 
 }
